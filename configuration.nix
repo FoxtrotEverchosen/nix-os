@@ -187,6 +187,7 @@
       init.defaultBranch = "main";
       user.name = "Filip Bulanda";
       user.email = "filipbulanda00@gmail.com";
+      safe.directory = "/etc/nixos";
     };
   };
 
