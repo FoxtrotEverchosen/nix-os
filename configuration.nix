@@ -108,6 +108,7 @@
     kdePackages.sddm-kcm
     alejandra
     git
+    steam
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
