@@ -1,14 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -85,10 +86,10 @@
   users.users."nixos" = {
     isNormalUser = true;
     description = "NixOS";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -107,7 +108,6 @@
     kdePackages.sddm-kcm
     alejandra
     git
-    steam
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -154,7 +154,6 @@
     };
   };
 
-
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
@@ -193,5 +192,4 @@
   programs.ssh = {
     startAgent = true;
   };
-
 }
