@@ -175,6 +175,7 @@
 
   environment.interactiveShellInit = ''
     fastfetch
+    alias rebuild='/etc/nixos/rebuild.sh'
   '';
 
   xdg.terminal-exec.settings = {
