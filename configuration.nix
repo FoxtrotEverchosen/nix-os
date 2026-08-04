@@ -123,6 +123,12 @@
     python3
     lua-language-server
     stylua
+    gopls
+    ruff
+    nixd
+    nodejs
+    clang-tools
+    bear
   ];
 
   environment.sessionVariables = {
