@@ -111,7 +111,23 @@
     steam
     vscode
     tree
+    rustup
+    gcc
+    ripgrep
+    fd
+    gnumake
+    unzip
+    tree-sitter
+    xclip
+    go
+    python3
+    lua-language-server
+    stylua
   ];
+
+  environment.sessionVariables = {
+    PATH = ["$HOME/.cargo/bin"];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -197,4 +213,10 @@
   programs.ssh = {
     startAgent = true;
   };
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    # Place for any missing dynamic libraries for unpackaged
+    # programs. Dp not put them in environment.systemPackages
+  ];
 }
