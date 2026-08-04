@@ -194,6 +194,7 @@
   environment.interactiveShellInit = ''
     fastfetch
     alias rebuild='/etc/nixos/rebuild.sh'
+    alias snvim='sudo -E nvim'
   '';
 
   xdg.terminal-exec.settings = {
