@@ -211,9 +211,13 @@
 
   environment.interactiveShellInit = ''
     fastfetch
-    alias rebuild='/etc/nixos/rebuild.sh'
-    alias snvim='sudo -E nvim'
   '';
+
+  environment.shellAliases = {
+    rebuild = "/etc/nixos/rebuild.sh";
+    update = "sudo nixos-rebuild switch --upgrade";
+    svim = "sudo -E nvim";
+  };
 
   xdg.terminal-exec.settings = {
     DefaultTerminal = "org.wezfurlong.wezterm.desktop";
