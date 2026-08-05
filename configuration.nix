@@ -99,36 +99,48 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # System & Tools
     wget
-    firefox
-    neovim
+    git
+    tree
+    unzip
     fastfetch
     tinyxxd
-    wezterm
-    kdePackages.sddm-kcm
-    alejandra
-    git
-    steam
-    vscode
-    tree
-    rustup
-    gcc
     ripgrep
     fd
-    gnumake
-    unzip
-    tree-sitter
     xclip
-    go
-    python3
-    lua-language-server
+
+    # Desktop & Applications
+    firefox
+    wezterm
+    steam
+    vscode
+    kdePackages.sddm-kcm
+
+    # Editors & Formatters
+    neovim
+    alejandra
     stylua
+
+    # Language Servers & LSP
+    lua-language-server
     gopls
     ruff
     nixd
-    nodejs
     clang-tools
+
+    # Development Tools
+    gcc
+    gnumake
     bear
+    unzip
+    tree-sitter
+    nodejs
+
+    # Languages & Runtimes
+    rustup
+    go
+    python3
   ];
 
   environment.sessionVariables = {
