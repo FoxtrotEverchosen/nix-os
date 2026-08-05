@@ -95,6 +95,8 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  # Steam has to be enabled explixitly to work
+  programs.steam.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -242,4 +244,15 @@
     # Place for any missing dynamic libraries for unpackaged
     # programs. Dp not put them in environment.systemPackages
   ];
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = ["weekly"];
+  };
 }
