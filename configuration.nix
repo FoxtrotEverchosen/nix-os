@@ -182,6 +182,7 @@
       dejavu_fonts
       liberation_ttf
       nerd-fonts.jetbrains-mono
+      nerd-fonts.symbols-only
     ];
     fontconfig = {
       enable = true;
