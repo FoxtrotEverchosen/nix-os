@@ -111,13 +111,17 @@
     ripgrep
     fd
     xclip
+    file
 
     # Desktop & Applications
     firefox
     wezterm
     steam
     vscode
+    blender
     kdePackages.sddm-kcm
+    libreoffice
+    spotify
 
     # Editors & Formatters
     neovim
@@ -134,10 +138,12 @@
     # Development Tools
     gcc
     gnumake
+    cmake
     bear
     unzip
     tree-sitter
     nodejs
+    codecrafters-cli
 
     # Languages & Runtimes
     rustup
@@ -196,6 +202,7 @@
 
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
       intel-media-driver
       intel-vaapi-driver
@@ -238,6 +245,11 @@
 
   programs.ssh = {
     startAgent = true;
+  };
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25; # uses ~3.8 GB of RAM for compressed swap
   };
 
   programs.nix-ld.enable = true;
