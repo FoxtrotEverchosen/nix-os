@@ -268,4 +268,6 @@
     automatic = true;
     dates = ["weekly"];
   };
+
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 }
