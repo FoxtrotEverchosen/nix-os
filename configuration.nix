@@ -5,7 +5,11 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {
+    config = config.nixpkgs.config;
+  };
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -112,16 +116,18 @@
     fd
     xclip
     file
+    vlc
 
     # Desktop & Applications
     firefox
     wezterm
     steam
     vscode
-    blender
     kdePackages.sddm-kcm
     libreoffice
     spotify
+    gimp
+    unstable.blender
 
     # Editors & Formatters
     neovim
@@ -270,4 +276,22 @@
   };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+
+  systemd.timers.clear-spotify-cache = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
+    };
+  };
+
+  systemd.services.clear-spotify-cache = {
+    description = "Clear Spotify Cache";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "/bin/bash -c 'rm -rf /home/nixos/.var/app/com.spotify.Client/cache/spotify/Data/*'";
+      User = "nixos";
+      RemainAfterExit = true;
+    };
+  };
 }
