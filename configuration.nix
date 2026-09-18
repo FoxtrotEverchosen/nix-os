@@ -90,7 +90,7 @@ in {
   users.users."nixos" = {
     isNormalUser = true;
     description = "NixOS";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "docker"];
     packages = with pkgs; [
       kdePackages.kate
       #  thunderbird
@@ -100,7 +100,15 @@ in {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   # Steam has to be enabled explixitly to work
-  programs.steam.enable = true;
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = [pkgs.proton-ge-bin];
+  };
+
+  # Enable flakes
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+
+  virtualisation.docker.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -117,6 +125,7 @@ in {
     xclip
     file
     vlc
+    docker
 
     # Desktop & Applications
     firefox
@@ -127,6 +136,7 @@ in {
     libreoffice
     spotify
     gimp
+    discord
     unstable.blender
 
     # Editors & Formatters
@@ -159,6 +169,8 @@ in {
 
   environment.sessionVariables = {
     PATH = ["$HOME/.cargo/bin"];
+    GIT_EDITOR = "nvim";
+    EDITOR = "nvim";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -225,6 +237,7 @@ in {
     "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
   ];
 
+  # -- Terminal & Shell
   environment.interactiveShellInit = ''
     fastfetch
   '';
@@ -246,6 +259,7 @@ in {
       user.name = "Filip Bulanda";
       user.email = "filipbulanda00@gmail.com";
       safe.directory = "/etc/nixos";
+      core.editor = "nvim";
     };
   };
 
@@ -253,17 +267,41 @@ in {
     startAgent = true;
   };
 
+  # -- Memory
   zramSwap = {
     enable = true;
-    memoryPercent = 25; # uses ~3.8 GB of RAM for compressed swap
+    memoryPercent = 40;
+    algorithm = "zstd";
   };
 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 8192;
+    }
+  ];
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 180;
+    "vm.page-cluster" = 0;
+    "vm.watermark_boost_factor" = 0;
+    "vm.watermark_scale_factor" = 125;
+  };
+
+  services.earlyoom = {
+    enable = true;
+    freeMemThreshold = 5; # kill when <5% RAM free
+    freeSwapThreshold = 5;
+  };
+
+  # -- Dynamically Linked Libraries
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     # Place for any missing dynamic libraries for unpackaged
     # programs. Dp not put them in environment.systemPackages
   ];
 
+  # -- Nix garbage collection
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -275,8 +313,7 @@ in {
     dates = ["weekly"];
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
+  # -- Systemd
   systemd.timers.clear-spotify-cache = {
     wantedBy = ["timers.target"];
     timerConfig = {
